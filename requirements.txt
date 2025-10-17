@@ -1,0 +1,7 @@
+Flask
+easyocr 
+scikit-learn 
+pillow
+numpy 
+sqlalchemy (or sqlite3 builtin) 
+flask-cors
