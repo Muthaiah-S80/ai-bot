@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sp-001",
+    "title": "FileNotFoundException reading config",
+    "error_text": "FileNotFoundException thrown when reading /etc/app/config.yml",
+    "solution": "Ensure the config file exists or mount it into container at /etc/app.",
+    "source": "SharePoint",
+    "tags": ["java","filenotfound"]
+  },
+  {
+    "id": "sp-002",
+    "title": "Permission denied for log folder",
+    "error_text": "Application cannot write logs to /var/log/myapp due to permission denied",
+    "solution": "Fix OS permissions or run the app with correct user; set writable path in config.",
+    "source": "SharePoint",
+    "tags": ["permissions","linux"]
+  },
+  {
+  "id": "sp-003",
+  "title": "Application failed to start",
+  "error_text": "The application was unable to start correctly due to a runtime initialization failure.",
+  "solution": "Check for missing or corrupted dependencies (DLLs or shared libraries), ensure the application is installed properly, and verify system compatibility. Reinstall or repair the application if needed.",
+  "source": "SharePoint",
+  "tags": ["startup","runtime","windows"]
+}
+]

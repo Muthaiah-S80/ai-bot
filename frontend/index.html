@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Error Resolver Chatbot</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+  <div class="app">
+    <div class="chat-window">
+      <!-- Header -->
+      <div class="header">
+        <div class="title">Error Resolver Bot</div>
+      </div>
+ 
+      <!-- Chat Messages -->
+      <div id="messages" class="messages"></div>
+ 
+      <!-- Controls -->
+      <div class="controls">
+ 
+        <!-- CONFIGURE TOGGLE -->
+        <div class="config-toggle">
+          <button id="configBtn"><i class="fa-solid fa-gear"></i> Configure</button>
+        </div>
+ 
+        <!-- SOURCE SELECT (hidden initially) -->
+        <div class="source-container hidden" id="sourceContainer">
+          <select id="sourceSelect">
+            <option value="ServiceNow,SharePoint">Search: Both</option>
+            <option value="ServiceNow">Search: ServiceNow</option>
+            <option value="SharePoint">Search: SharePoint</option>
+          </select>
+        </div>
+ 
+        <!-- TEXT INPUT -->
+        <div class="input-container">
+          <input id="textInput" placeholder="Type your error message here..." />
+          <span class="icon send-icon"><i class="fa-solid fa-paper-plane"></i></span>
+        </div>
+ 
+        <!-- FILE UPLOAD -->
+        <div class="file-container">
+          <input id="fileInput" type="file" accept="image/*" hidden />
+          <button id="uploadBtn" class="upload-btn" title="Upload an error screenshot">
+            <i class="fa-solid fa-upload"></i> Upload Screenshot
+          </button>
+          <span id="fileStatus" class="file-status"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  <script src="script.js"></script>
+</body>
+</html>

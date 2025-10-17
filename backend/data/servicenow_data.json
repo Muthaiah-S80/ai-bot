@@ -1,0 +1,26 @@
+[
+  {
+    "id": "sn-001",
+    "title": "NullPointerException in PaymentService",
+    "error_text": "NullPointerException at PaymentService.processPayment when user is null",
+    "solution": "Ensure the user object is initialized before calling processPayment. Add null checks.",
+    "source": "ServiceNow",
+    "tags": ["java","nullpointer"]
+  },
+  {
+    "id": "sn-002",
+    "title": "DB Connection Timeout",
+    "error_text": "JDBC connection timeout when connecting to orders-db",
+    "solution": "Increase DB connection pool size and check DB host connectivity.",
+    "source": "ServiceNow",
+    "tags": ["database","timeout"]
+  },
+  {
+  "id": "sn-003",
+  "title": "Initialization Error during Application Startup",
+  "error_text": "The application failed to initialize because the window station is being shut down.",
+  "solution": "Verify that the system is not in the process of shutting down before starting the application. Ensure services are launched only when the session is active.",
+  "source": "ServiceNow",
+  "tags": ["windows", "initialization", "shutdown"]
+}
+]
