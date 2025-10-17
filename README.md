@@ -18,12 +18,15 @@ Next steps / extension ideas
 ```
 # **1. Quick summary**
 This repository implements a local Error Resolver bot:
-Frontend: Chat UI (HTML/CSS/JS) that resembles a ChatGPT-style message stream with avatars and feedback buttons.
-Backend: Flask API that accepts text or uploaded image, extracts text (EasyOCR), runs a TF-IDF search against local mock KB (ServiceNow & SharePoint JSON), and returns the best solution + source.
-Feedback: thumbs up/down stored to a local SQLite DB for later analysis/retraining.
-AWS-ready: code is structured so you can replace local components with AWS services (S3, Textract, Rekognition, Bedrock, DynamoDB) once you have AWS access.
+**Frontend**: Chat UI (HTML/CSS/JS) that resembles a ChatGPT-style message stream with avatars and feedback buttons.
 
-**# 2. Repo layout**
+**Backend**: Flask API that accepts text or uploaded image, extracts text (EasyOCR), runs a TF-IDF search against local mock KB (ServiceNow & SharePoint JSON), and returns the best solution + source.
+
+**Feedback**: thumbs up/down stored to a local SQLite DB for later analysis/retraining.
+
+**AWS-ready**: code is structured so you can replace local components with AWS services (S3, Textract, Rekognition, Bedrock, DynamoDB) once you have AWS access.
+
+# **2. Repo layout**
 ```markdown
 error-resolver-bot/
 ├── backend/
@@ -47,20 +50,21 @@ error-resolver-bot/
 If you followed earlier instructions, you also placed model files under:
 C:\Users\<you>\.EasyOCR\models\craft_mlt_25k.pth and english_g2.pth (Windows) — or equivalent Linux path.
 
-**# 3. Prerequisites (local)**
+# **3. Prerequisites (local)**
 Python 3.9+ (3.10 recommended)
 pip
 Recommended: virtualenv / venv
-Packages (installed via requirements.txt): Flask, easyocr, scikit-learn, pillow, numpy, sqlalchemy (or sqlite3 builtin), flask-cors
-Example requirements.txt (included):
-flask
+Packages (installed via requirements.txt): 
+Flask, 
+easyocr, 
+scikit-learn, 
+pillow, 
+numpy, 
+sqlalchemy (or sqlite3 builtin), 
 flask-cors
-easyocr
-scikit-learn
-pillow
-numpy
-sqlalchemy
-Note about EasyOCR:
+
+
+**Note about EasyOCR:**
 It downloads models on first run unless you provide offline .pth files. In blocked office networks, put craft_mlt_25k.pth and english_g2.pth into C:\Users\<you>\.EasyOCR\models\ (Windows) or ~/.EasyOCR/models/. See section 7.
 
 # **4. Quickstart — run locally (step-by-step)**
@@ -122,11 +126,12 @@ Body example:
   "source": "ServiceNow",
   "feedback": "up"
 }
+```
 Returns { "ok": true }
 API: /api/feedbacks
 Method: GET
 Returns list of stored feedback entries.
-```
+
 # **6. Feedback DB (SQLite) — schema & usage**
 feedback_db.py manages a local SQLite DB (e.g., feedback.db) with a table feedback:
 Schema:
@@ -175,17 +180,29 @@ reader = easyocr.Reader(['en'], gpu=False, model_storage_directory=r'C:\Users\<y
 When your team gives AWS access (IAM user/role and keys), you can replace local components with managed AWS services for production:
 What access is required
 --> S3: PutObject/List/GetObject (for image uploads and result storage)
+
 --> Textract: textract:DetectDocumentText (or async AnalyzeDocument)
+
 --> Rekognition (optional): rekognition:DetectText or additional image classification
+
 --> Bedrock / SageMaker / OpenAI (if using): permission to call generative model API
+
 --> DynamoDB (or RDS): PutItem / Query for feedback persistence
+
 --> Lambda / ECS / ECR / EC2: optional compute for serverless processing or hosting
+
 --> CloudWatch: logs & monitoring
+
 Files / code to change (exact pointers)
+
 --> OCR (EasyOCR) → AWS Textract Replace ocr_handler.extract_text_from_image() to call Textract (boto3). Textract returns JSON blocks; convert lines into a single query string.
+
 --> Uploads to local /uploads → S3 When a user uploads image, save to S3 (unique key), and optionally trigger Lambda / S3 event to process automatically.
+
 --> AI fallback (local Flan-T5/OpenAI) → AWS Bedrock Replace local inference with Bedrock runtime call (or use OpenAI as before). Keep the wrapper function so switching is one-line.
+
 --> Feedback storage: SQLite → DynamoDB Replace feedback_db.py functions with boto3 DynamoDB calls to PutItem, Query, and Scan.
+
 --> Hosting: run Flask behind a container (Docker) and deploy to ECS/Fargate / EC2 / EKS. Or convert to serverless (API Gateway + Lambda).
 
 Example Textract call (boto3):
@@ -230,15 +247,15 @@ If you encounter any issues while following the steps (EasyOCR model placement, 
 Useful commands summary
 Create virtualenv & install:
 python -m venv venv
-# Windows:
+Windows:
 venv\Scripts\activate
-# mac/linux:
+mac/linux:
 source venv/bin/activate
  
 pip install -r requirements.txt
 Run Flask:
 cd backend
 python app.py
-# Open http://127.0.0.1:5000/
+
 
 Postman test (multipart/form-data): POST http://127.0.0.1:5000/api/chat with file and/or text and sources.
